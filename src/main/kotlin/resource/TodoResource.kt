@@ -1,14 +1,20 @@
 package resource
 
+import common.Pageable
+import common.PageableResponse
 import dto.TodoRequest
 import dto.TodoResponse
+import dto.TodoUpdateRequest
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
+import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
+import jakarta.ws.rs.PATCH
 import jakarta.ws.rs.POST
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
+import jakarta.ws.rs.QueryParam
 import jakarta.ws.rs.core.MediaType
 import service.TodoService
 import java.util.*
@@ -30,7 +36,19 @@ class TodoResource @Inject constructor(private val todoService: TodoService) {
     }
 
     @GET
-    fun getTodoList(): TodoResponse {
-        return TodoResponse(UUID.randomUUID(), "Learn Spring")
+    fun getTodoList(@QueryParam("limit") limit: Int, @QueryParam("offset") offset: Int): Pageable<TodoResponse> {
+        return todoService.listTodo(limit, offset)
+    }
+
+    @PATCH
+    @Path("/{id}")
+    fun updateTodo(@PathParam("id") todoId: String, request: TodoUpdateRequest): TodoResponse {
+        return todoService.updateTodo(TodoUpdateRequest(UUID.fromString(todoId), request.note))
+    }
+
+    @DELETE
+    @Path("/{id}")
+    fun deleteTodo(@PathParam("id") todoId: String): TodoResponse {
+        return todoService.deleteTodo(UUID.fromString(todoId))
     }
 }

@@ -10,7 +10,6 @@ class DropWizardConfiguration: Configuration(), DependecnyInjectionConfiguration
 
     override fun getSingletons(): List<Class<*>> {
         return listOf(
-            TodoResource::class.java,
         )
     }
 

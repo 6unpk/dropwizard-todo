@@ -4,6 +4,7 @@ import io.dropwizard.core.ConfiguredBundle
 import io.dropwizard.core.setup.Environment
 import jakarta.inject.Singleton
 import org.glassfish.hk2.utilities.binding.AbstractBinder
+import org.glassfish.jersey.internal.inject.Injections
 
 class DependencyInjectionBundle: ConfiguredBundle<DependecnyInjectionConfiguration> {
     override fun run(configuration: DependecnyInjectionConfiguration?, environment: Environment?) {
@@ -11,7 +12,7 @@ class DependencyInjectionBundle: ConfiguredBundle<DependecnyInjectionConfigurati
             object: AbstractBinder() {
                 override fun configure() {
                     for (singletonClass in configuration?.getSingletons()!!) {
-                        bindAsContract(singletonClass).`in`(Singleton::class.java)
+                        bind(singletonClass.first).to(singletonClass.second).`in`(Singleton::class.java)
                     }
 
                     for (namedProperty in configuration.getNamedProperties()) {

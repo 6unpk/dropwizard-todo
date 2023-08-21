@@ -3,9 +3,11 @@ package repository
 import common.Pageable
 import common.PageableResponse
 import dto.Todo
+import jakarta.inject.Singleton
 import java.util.*
 
-object MutableMapTodoRepository: TodoRepository {
+@Singleton
+class MutableMapTodoRepository: TodoRepository {
     private val todoMap = mutableMapOf<UUID, Todo>()
 
     override fun getTodo(id: UUID): Todo {

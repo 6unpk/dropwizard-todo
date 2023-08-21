@@ -6,6 +6,7 @@ import dto.TodoRequest
 import dto.TodoResponse
 import dto.TodoUpdateRequest
 import jakarta.inject.Inject
+import jakarta.inject.Named
 import jakarta.inject.Singleton
 import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
@@ -16,13 +17,15 @@ import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.QueryParam
 import jakarta.ws.rs.core.MediaType
+import repository.MutableMapTodoRepository
+import service.TodoInterface
 import service.TodoService
 import java.util.*
 
 @Path("/todo")
 @Produces(MediaType.APPLICATION_JSON)
 @Singleton
-class TodoResource @Inject constructor(private val todoService: TodoService) {
+class TodoResource @Inject constructor(private val todoService: TodoInterface) {
 
     @POST
     fun addTodoItem(item: TodoRequest): TodoResponse {
@@ -36,8 +39,8 @@ class TodoResource @Inject constructor(private val todoService: TodoService) {
     }
 
     @GET
-    fun getTodoList(@QueryParam("limit") limit: Int, @QueryParam("offset") offset: Int): Pageable<TodoResponse> {
-        return todoService.listTodo(limit, offset)
+    fun getTodoList(@QueryParam("limit") limit: Int?, @QueryParam("offset") offset: Int?): Pageable<TodoResponse> {
+        return todoService.listTodo(limit ?: 10, offset ?: 0)
     }
 
     @PATCH

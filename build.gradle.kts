@@ -16,6 +16,8 @@ dependencies {
     testImplementation(kotlin("test"))
 
     implementation("io.dropwizard:dropwizard-core:4.0.1")
+    implementation("io.dropwizard:dropwizard-hibernate:4.0.1")
+    implementation("org.postgresql:postgresql:42.6.0")
 }
 
 tasks.test {
